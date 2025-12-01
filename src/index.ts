@@ -1,21 +1,19 @@
 import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
-import { createUserInputSchema } from "./user/schema.js";
-import { userService } from "./user/service.js";
+import { authRouter } from "./auth/router";
+import { jwtMiddleware } from "./middleware/jwt";
 
 const app = new Hono();
+
+app.route("/auth", authRouter);
 
 app.get("/", (c) => {
   return c.text("Hello Hono!");
 });
 
-app.post("/signup", zValidator("json", createUserInputSchema), async (c) => {
-  const data = c.req.valid("json");
-  const user = await userService.createUser(data);
-
-  return c.json(user);
+app.get("/test", jwtMiddleware, (c) => {
+  return c.json({ message: c.var.user.id });
 });
 
 serve(
