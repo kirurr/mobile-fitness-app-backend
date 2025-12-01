@@ -2,10 +2,10 @@ services:
   app-dev:
     build:
       context: .
-      target: deps  # Use the dependencies stage from our multi-stage build
+      dockerfile: Dockerfile.dev
     volumes:
       - .:/app
-      - /app/node_modules
+      - /app/node_modules  # Anonymous volume to prevent host node_modules from overriding container's
     working_dir: /app
     ports:
       - "3000:3000"

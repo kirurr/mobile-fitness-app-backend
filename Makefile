@@ -28,6 +28,10 @@ run-dev:
 	@echo "Starting development environment..."
 	docker-compose -f docker-compose.dev.yaml up -d
 
+run-dev-build: 
+	@echo "Building and running development environment..."
+	docker-compose -f docker-compose.dev.yaml up --build -d
+
 # Run production environment
 run-prod:
 	@echo "Starting production environment..."
