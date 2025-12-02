@@ -2,7 +2,7 @@ import { sql } from "drizzle-orm";
 import { check, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   email: text().notNull(),
   passwordHash: text().notNull(),
 });
@@ -16,26 +16,33 @@ export const userDataTable = pgTable("user_data", {
   age: integer().notNull(),
   weight: integer().notNull(),
   height: integer().notNull(),
-  fitnessGoal: integer().notNull(),
+  fitnessGoalId: integer()
+    .notNull()
+    .references(() => fitnessGoalTable.id),
   trainingLevel: integer()
     .notNull()
     .references(() => difficultyLevelTable.id),
 });
 
+export const fitnessGoalTable = pgTable("fitness_goal", {
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  name: text().notNull(),
+});
+
 export const difficultyLevelTable = pgTable("difficulty_level", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
   description: text().notNull(),
 });
 
 export const subscriptionTable = pgTable("subscription", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
   monthlyCost: integer().notNull(),
 });
 
 export const userPaymentTable = pgTable("user_payment", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer()
     .notNull()
     .references(() => userTable.id),
@@ -44,7 +51,7 @@ export const userPaymentTable = pgTable("user_payment", {
 });
 
 export const userSubscriptionTable = pgTable("user_subscription", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer()
     .notNull()
     .references(() => userTable.id),
@@ -54,20 +61,20 @@ export const userSubscriptionTable = pgTable("user_subscription", {
 });
 
 export const exerciseCategoryTable = pgTable("exercise_category", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
   description: text().notNull(),
 });
 
 export const muscleGroupTable = pgTable("muscle_group", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
 });
 
 export const exerciseTypeEnum = ["reps", "timed"] as const;
 
 export const exerciseTable = pgTable("exercise", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
   categoryId: integer()
     .notNull()
@@ -82,7 +89,7 @@ export const exerciseTable = pgTable("exercise", {
 });
 
 export const exerciseProgramTable = pgTable("exercise_program", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer(),
   name: text().notNull(),
   description: text().notNull(),
@@ -94,10 +101,23 @@ export const exerciseProgramTable = pgTable("exercise_program", {
     .references(() => subscriptionTable.id),
 });
 
+export const exerciseProgram_FitnessGoalTable = pgTable(
+  "exercise_program_fitness_goal",
+  {
+    id: integer().primaryKey().generatedByDefaultAsIdentity(),
+    programId: integer()
+      .notNull()
+      .references(() => exerciseProgramTable.id),
+    fitnessGoalId: integer()
+      .notNull()
+      .references(() => fitnessGoalTable.id),
+  },
+);
+
 export const exerciseProgram_ExerciseTable = pgTable(
   "exercise_program_exercise",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    id: integer().primaryKey().generatedByDefaultAsIdentity(),
     programId: integer()
       .notNull()
       .references(() => exerciseProgramTable.id),
@@ -119,7 +139,7 @@ export const exerciseProgram_ExerciseTable = pgTable(
 );
 
 export const userCompletedProgramTable = pgTable("user_completed_program", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer()
     .references(() => userTable.id)
     .notNull()
@@ -134,7 +154,7 @@ export const userCompletedProgramTable = pgTable("user_completed_program", {
 export const userCompletedExerciseTable = pgTable(
   "user_completed_exercise",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    id: integer().primaryKey().generatedByDefaultAsIdentity(),
     completedProgramId: integer()
       .notNull()
       .references(() => userCompletedProgramTable.id),
@@ -161,7 +181,7 @@ export const userCompletedExerciseTable = pgTable(
 );
 
 export const plannedExerciseProgramTable = pgTable("planned_exercise_program", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: integer().primaryKey().generatedByDefaultAsIdentity(),
   programId: integer()
     .notNull()
     .references(() => exerciseProgramTable.id),
@@ -169,7 +189,7 @@ export const plannedExerciseProgramTable = pgTable("planned_exercise_program", {
 export const plannedExerciseProgram_DateTable = pgTable(
   "planned_exercise_program_date",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    id: integer().primaryKey().generatedByDefaultAsIdentity(),
     plannedExerciseProgramId: integer()
       .notNull()
       .references(() => plannedExerciseProgramTable.id),
