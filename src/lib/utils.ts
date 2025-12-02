@@ -8,7 +8,7 @@ export async function verifyPassword(
   password: string,
   hash: string,
 ): Promise<boolean> {
-  return await argon2id.verify(password, hash);
+  return await argon2id.verify(hash, password);
 }
 
 export function generateDBString(): string {

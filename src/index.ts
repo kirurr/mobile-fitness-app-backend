@@ -2,24 +2,31 @@ import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { authRouter } from "./auth/router";
-import { jwtMiddleware } from "./middleware/jwt";
+import { userDataRouter } from "./user-data/router";
+import { fitnessGoalRouter } from "./fitness-goal/router";
+import { difficultyLevelRouter } from "./difficulty-level/router";
+import { subscriptionRouter } from "./subscription/router";
+import { userSubscriptionRouter } from "./user-subscription/router";
+import { userPaymentRouter } from "./user-payment/router";
+import { exerciseCategoryRouter } from "./exercise-category/router";
+import { muscleGroupRouter } from "./muscle-group/router";
 
 const app = new Hono();
 
 app.route("/auth", authRouter);
-
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
-
-app.get("/test", jwtMiddleware, (c) => {
-  return c.json({ message: c.var.user.id });
-});
+app.route("/user-data", userDataRouter);
+app.route("/fitness-goal", fitnessGoalRouter);
+app.route("/difficulty-level", difficultyLevelRouter);
+app.route("/subscription", subscriptionRouter);
+app.route("/user-subscription", userSubscriptionRouter);
+app.route("/user-payment", userPaymentRouter);
+app.route("/exercise-category", exerciseCategoryRouter);
+app.route("/muscle-group", muscleGroupRouter);
 
 serve(
   {
     fetch: app.fetch,
-    port: 3000,
+    port: Number(process.env.PORT ?? 3000),
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
