@@ -1,16 +1,17 @@
 import { Hono } from "hono";
 import { muscleGroupService } from "./service";
+import { jwtMiddleware } from "../middleware/jwt";
 
 export const muscleGroupRouter = new Hono();
 
 // Get all muscle groups
-muscleGroupRouter.get("/", async (c) => {
+muscleGroupRouter.get("/", jwtMiddleware, async (c) => {
   const muscleGroups = await muscleGroupService.getAll();
   return c.json(muscleGroups);
 });
 
 // Get muscle group by ID
-muscleGroupRouter.get("/:id", async (c) => {
+muscleGroupRouter.get("/:id", jwtMiddleware, async (c) => {
   const id = Number(c.req.param("id"));
 
   const muscleGroup = await muscleGroupService.getById(id);
