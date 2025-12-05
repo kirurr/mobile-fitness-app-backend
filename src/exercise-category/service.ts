@@ -1,5 +1,6 @@
 import { db } from "../db/drizzle";
 import { exerciseCategoryTable } from "../db/schema";
+import { eq } from "drizzle-orm";
 import type { ExerciseCategory } from "./schema";
 
 export const exerciseCategoryService = {
@@ -12,7 +13,7 @@ export const exerciseCategoryService = {
     const exerciseCategory = await db
       .select()
       .from(exerciseCategoryTable)
-      .where(() => exerciseCategoryTable.id.eq(id));
+      .where(eq(exerciseCategoryTable.id, id));
 
     if (exerciseCategory.length === 0) {
       return null;

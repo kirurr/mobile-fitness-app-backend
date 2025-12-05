@@ -6,6 +6,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "db:seed": "tsx seed.ts",
+		"lint": "eslint",
     "db:push": "drizzle-kit push"
   },
   "dependencies": {

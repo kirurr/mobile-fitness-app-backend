@@ -10,8 +10,16 @@ import { userSubscriptionRouter } from "./user-subscription/router";
 import { userPaymentRouter } from "./user-payment/router";
 import { exerciseCategoryRouter } from "./exercise-category/router";
 import { muscleGroupRouter } from "./muscle-group/router";
+import { exerciseRouter } from "./exercise/router";
+import { exerciseProgramRouter } from "./exerciseProgram/router";
+import { userCompletedProgramRouter } from "./userCompletedProgram/router";
+import { userCompletedExerciseRouter } from "./userCompletedExercise/router";
+import { plannedExerciseProgramRouter } from "./plannedExerciseProgram/router";
+import { logger } from 'hono/logger'
 
 const app = new Hono();
+
+app.use(logger())
 
 app.route("/auth", authRouter);
 app.route("/user-data", userDataRouter);
@@ -22,6 +30,11 @@ app.route("/user-subscription", userSubscriptionRouter);
 app.route("/user-payment", userPaymentRouter);
 app.route("/exercise-category", exerciseCategoryRouter);
 app.route("/muscle-group", muscleGroupRouter);
+app.route("/exercise", exerciseRouter);
+app.route("/exercise-program", exerciseProgramRouter);
+app.route("/user-completed-program", userCompletedProgramRouter);
+app.route("/user-completed-exercise", userCompletedExerciseRouter);
+app.route("/planned-exercise-program", plannedExerciseProgramRouter);
 
 serve(
   {

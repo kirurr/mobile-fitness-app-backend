@@ -97,7 +97,6 @@ export const exerciseProgramTable = pgTable("exercise_program", {
     .notNull()
     .references(() => difficultyLevelTable.id),
   subscriptionId: integer()
-    .notNull()
     .references(() => subscriptionTable.id),
 });
 
@@ -141,7 +140,6 @@ export const exerciseProgram_ExerciseTable = pgTable(
 export const userCompletedProgramTable = pgTable("user_completed_program", {
   id: integer().primaryKey().generatedByDefaultAsIdentity(),
   userId: integer()
-    .references(() => userTable.id)
     .notNull()
     .references(() => userTable.id),
   programId: integer()

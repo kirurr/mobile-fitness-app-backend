@@ -1,4 +1,4 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema  } from "drizzle-zod";
 import { userSubscriptionTable } from "../db/schema";
 import { z } from "zod";
 
@@ -18,3 +18,15 @@ export type CreateUserSubscriptionInput = z.infer<typeof createUserSubscriptionS
 export const updateUserSubscriptionSchema = createUserSubscriptionSchema.partial();
 
 export type UpdateUserSubscriptionInput = z.infer<typeof updateUserSubscriptionSchema>;
+
+export const updateUserSubscriptionSchemaOmitStartDate = createUserSubscriptionSchema.omit({
+	startDate: true,
+	endDate: true,
+});
+
+export type UpdateUserSubscription = z.infer<
+	typeof updateUserSubscriptionSchemaOmitStartDate
+> & {
+	startDate?: Date;
+	endDate?: Date;
+};

@@ -1,5 +1,6 @@
 import { db } from "../db/drizzle";
 import { muscleGroupTable } from "../db/schema";
+import { eq } from "drizzle-orm";
 import type { MuscleGroup } from "./schema";
 
 export const muscleGroupService = {
@@ -12,7 +13,7 @@ export const muscleGroupService = {
     const muscleGroup = await db
       .select()
       .from(muscleGroupTable)
-      .where(() => muscleGroupTable.id.eq(id));
+      .where(eq(muscleGroupTable.id, id));
 
     if (muscleGroup.length === 0) {
       return null;
