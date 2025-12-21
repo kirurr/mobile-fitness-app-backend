@@ -7,6 +7,8 @@ export const userSchema = createSelectSchema(userTable);
 
 export type User = z.infer<typeof userSchema>;
 
+export type UserWithoutPassword = Omit<User, "passwordHash">;
+
 export const createUserSchema = createInsertSchema(userTable);
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;

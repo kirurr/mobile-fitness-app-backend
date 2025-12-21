@@ -1,22 +1,27 @@
+import { HTTPException } from "hono/http-exception";
 import { signToken } from "../lib/jwt";
 import type { AuthUserInput } from "../user/schema";
 import { userService } from "../user/service";
 
+type AuthResponse = {
+  userId: number;
+  token: string;
+};
 export const authService = {
-  signin: async (data: AuthUserInput): Promise<string> => {
+  signin: async (data: AuthUserInput): Promise<AuthResponse> => {
     const user = await userService.authenticate(data);
     if (!user) {
-      throw new Error("Invalid credentials");
+      throw new HTTPException(401, { message: "Invalid credentials" });
     }
 
     const token = await signToken({ id: user.id });
-    return token;
+    return { token, userId: user.id };
   },
 
-	signup: async (data: AuthUserInput): Promise<string> => {
-		const user = await userService.create(data);
+  signup: async (data: AuthUserInput): Promise<AuthResponse> => {
+    const user = await userService.create(data);
 
-		const token = await signToken({ id: user.id });
-		return token;
-	}
+    const token = await signToken({ id: user.id });
+    return { token, userId: user.id };
+  },
 };
