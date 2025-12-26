@@ -15,12 +15,20 @@ export const plannedExerciseProgramDateSchema = createSelectSchema(plannedExerci
 
 export type PlannedExerciseProgramDate = z.infer<typeof plannedExerciseProgramDateSchema>;
 
+export const plannedExerciseProgramDateOpenApiSchema = plannedExerciseProgramDateSchema.extend({
+  date: z.string().datetime(),
+});
+
 // Extended schema with dates
 export const plannedExerciseProgramWithDatesSchema = plannedExerciseProgramSchema.extend({
   dates: z.array(plannedExerciseProgramDateSchema),
 });
 
 export type PlannedExerciseProgramWithDates = z.infer<typeof plannedExerciseProgramWithDatesSchema>;
+
+export const plannedExerciseProgramWithDatesOpenApiSchema = plannedExerciseProgramSchema.extend({
+  dates: z.array(plannedExerciseProgramDateOpenApiSchema),
+});
 
 // Schema for creating planned exercise program
 export const createPlannedExerciseProgramSchema = z.object({

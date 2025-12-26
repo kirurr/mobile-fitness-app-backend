@@ -9,6 +9,10 @@ import {
 } from "../db/schema";
 import { createSelectSchema } from "drizzle-zod";
 
+const exerciseProgramExerciseSchema = createSelectSchema(exerciseProgram_ExerciseTable);
+const difficultyLevelSchema = createSelectSchema(difficultyLevelTable);
+const subscriptionSchema = createSelectSchema(subscriptionTable);
+
 // Base schema for exercise program (excluding user data)
 export const exerciseProgramSchema = createSelectSchema(exerciseProgramTable);
 
@@ -17,20 +21,27 @@ export type ExerciseProgram = z.infer<typeof exerciseProgramSchema>;
 
 // Schema for exercise in program with additional details from join table
 export const exerciseInProgramSchema = createSelectSchema(exerciseTable).extend({
-  programExercise: exerciseProgram_ExerciseTable.$inferSelect,
+  programExercise: exerciseProgramExerciseSchema,
 });
 
 export type ExerciseInProgram = z.infer<typeof exerciseInProgramSchema>;
 
 // Schema for program with exercises and fitness goals
 export const exerciseProgramWithDetailsSchema = exerciseProgramSchema.extend({
-  difficultyLevel: difficultyLevelTable.$inferSelect,
-  subscription: subscriptionTable.$inferSelect,
+  difficultyLevel: difficultyLevelSchema,
+  subscription: subscriptionSchema,
   exercises: z.array(exerciseInProgramSchema),
   fitnessGoals: z.array(createSelectSchema(fitnessGoalTable)),
 });
 
 export type ExerciseProgramWithDetails = z.infer<typeof exerciseProgramWithDetailsSchema>;
+
+export const exerciseProgramWithExercisesSchema = exerciseProgramSchema.extend({
+  exercises: z.array(exerciseInProgramSchema),
+  fitnessGoals: z.array(createSelectSchema(fitnessGoalTable)),
+});
+
+export type ExerciseProgramWithExercises = z.infer<typeof exerciseProgramWithExercisesSchema>;
 
 // Schema for query parameters for filtering
 export const exerciseProgramFilterSchema = z.object({

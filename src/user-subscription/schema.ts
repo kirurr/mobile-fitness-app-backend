@@ -6,6 +6,11 @@ export const userSubscriptionSchema = createSelectSchema(userSubscriptionTable);
 
 export type UserSubscription = z.infer<typeof userSubscriptionSchema>;
 
+export const userSubscriptionOpenApiSchema = userSubscriptionSchema.extend({
+  startDate: z.string().datetime(),
+  endDate: z.string().datetime(),
+});
+
 export const createUserSubscriptionSchema = createInsertSchema(userSubscriptionTable, {
   userId: z.number(),
   subscriptionId: z.number(),

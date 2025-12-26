@@ -1,29 +1,66 @@
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { describeRoute, resolver, validator } from "hono-openapi";
+import { z } from "zod";
 import { jwtMiddleware } from "../middleware/jwt";
 import { userDataService } from "./service";
-import { createUserDataSchema, updateUserDataSchema } from "./schema";
+import {
+  createUserDataSchema,
+  updateUserDataSchema,
+  userDataSchema,
+} from "./schema";
 
 export const userDataRouter = new Hono();
 
+const messageSchema = z.object({ message: z.string() });
+
 // Get user data for the authenticated user
-userDataRouter.get("/", jwtMiddleware, async (c) => {
-  const userId = c.var.user.id;
+userDataRouter.get(
+  "/",
+  describeRoute({
+    description: "Get user data for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(userDataSchema) },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const userId = c.var.user.id;
 
-  const userData = await userDataService.getByUserId(userId);
+    const userData = await userDataService.getByUserId(userId);
 
-  if (!userData) {
-    return c.json({ error: "User data not found" }, 400);
-  }
+    if (!userData) {
+      return c.json({ error: "User data not found" }, 400);
+    }
 
-  return c.json(userData);
-});
+    return c.json(userData);
+  },
+);
 
 // Create user data for the authenticated user
 userDataRouter.post(
   "/",
+  describeRoute({
+    description: "Create user data for the authenticated user",
+    responses: {
+      201: {
+        description: "Created",
+        content: {
+          "application/json": { schema: resolver(userDataSchema) },
+        },
+      },
+    },
+  }),
   jwtMiddleware,
-  zValidator("json", createUserDataSchema),
+  validator("json", createUserDataSchema, (result, c) => {
+    if (!result.success) {
+      return c.json({ error: "Invalid request body" }, 400);
+    }
+  }),
   async (c) => {
     const validatedData = c.req.valid("json");
     const userId = c.var.user.id;
@@ -46,8 +83,23 @@ userDataRouter.post(
 // Update user data for the authenticated user
 userDataRouter.put(
   "/",
+  describeRoute({
+    description: "Update user data for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(userDataSchema) },
+        },
+      },
+    },
+  }),
   jwtMiddleware,
-  zValidator("json", updateUserDataSchema),
+  validator("json", updateUserDataSchema, (result, c) => {
+    if (!result.success) {
+      return c.json({ error: "Invalid request body" }, 400);
+    }
+  }),
   async (c) => {
     const validatedData = c.req.valid("json");
     const userId = c.var.user.id;
@@ -63,15 +115,29 @@ userDataRouter.put(
 );
 
 // Delete user data for the authenticated user
-userDataRouter.delete("/", jwtMiddleware, async (c) => {
-  const userId = c.var.user.id;
+userDataRouter.delete(
+  "/",
+  describeRoute({
+    description: "Delete user data for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(messageSchema) },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const userId = c.var.user.id;
 
-  const deleted = await userDataService.delete(userId);
+    const deleted = await userDataService.delete(userId);
 
-  if (!deleted) {
-    return c.json({ error: "User data not found" }, 404);
-  }
+    if (!deleted) {
+      return c.json({ error: "User data not found" }, 404);
+    }
 
-  return c.json({ message: "User data deleted successfully" });
-});
-
+    return c.json({ message: "User data deleted successfully" });
+  },
+);

@@ -1,42 +1,93 @@
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { describeRoute, resolver, validator } from "hono-openapi";
+import { z } from "zod";
 import { jwtMiddleware } from "../middleware/jwt";
 import { userSubscriptionService } from "./service";
 import {
   createUserSubscriptionSchema,
   updateUserSubscriptionSchema,
+  userSubscriptionOpenApiSchema,
 } from "./schema";
 
 export const userSubscriptionRouter = new Hono();
 
+const messageSchema = z.object({ message: z.string() });
+
 // Get user subscriptions for the authenticated user
-userSubscriptionRouter.get("/", jwtMiddleware, async (c) => {
-  const userId = c.var.user.id;
+userSubscriptionRouter.get(
+  "/",
+  describeRoute({
+    description: "Get user subscriptions for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": {
+            schema: resolver(userSubscriptionOpenApiSchema.array()),
+          },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const userId = c.var.user.id;
 
-  const userSubscriptions = await userSubscriptionService.getByUserId(userId);
+    const userSubscriptions = await userSubscriptionService.getByUserId(userId);
 
-  return c.json(userSubscriptions);
-});
+    return c.json(userSubscriptions);
+  },
+);
 
 // Get user subscription by ID (only if it belongs to the authenticated user)
-userSubscriptionRouter.get("/:id", jwtMiddleware, async (c) => {
-  const id = Number(c.req.param("id"));
-  const userId = c.var.user.id;
+userSubscriptionRouter.get(
+  "/:id",
+  describeRoute({
+    description: "Get user subscription by ID for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(userSubscriptionOpenApiSchema) },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const id = Number(c.req.param("id"));
+    const userId = c.var.user.id;
 
-  const userSubscription = await userSubscriptionService.getById(id);
+    const userSubscription = await userSubscriptionService.getById(id);
 
-  if (!userSubscription || userSubscription.userId !== userId) {
-    return c.json({ error: "User subscription not found" }, 404);
-  }
+    if (!userSubscription || userSubscription.userId !== userId) {
+      return c.json({ error: "User subscription not found" }, 404);
+    }
 
-  return c.json(userSubscription);
-});
+    return c.json(userSubscription);
+  },
+);
 
 // Create user subscription for the authenticated user
 userSubscriptionRouter.post(
   "/",
+  describeRoute({
+    description: "Create user subscription for the authenticated user",
+    responses: {
+      201: {
+        description: "Created",
+        content: {
+          "application/json": { schema: resolver(userSubscriptionOpenApiSchema) },
+        },
+      },
+    },
+  }),
   jwtMiddleware,
-  zValidator("json", createUserSubscriptionSchema),
+  validator("json", createUserSubscriptionSchema, (result, c) => {
+    if (!result.success) {
+      return c.json({ error: "Invalid request body" }, 400);
+    }
+  }),
   async (c) => {
     const validatedData = c.req.valid("json");
     const userId = c.var.user.id;
@@ -61,8 +112,23 @@ userSubscriptionRouter.post(
 // Update user subscription (only if it belongs to the authenticated user)
 userSubscriptionRouter.put(
   "/:id",
+  describeRoute({
+    description: "Update user subscription for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(userSubscriptionOpenApiSchema) },
+        },
+      },
+    },
+  }),
   jwtMiddleware,
-  zValidator("json", updateUserSubscriptionSchema),
+  validator("json", updateUserSubscriptionSchema, (result, c) => {
+    if (!result.success) {
+      return c.json({ error: "Invalid request body" }, 400);
+    }
+  }),
   async (c) => {
     const id = Number(c.req.param("id"));
     const validatedData = c.req.valid("json");
@@ -91,21 +157,36 @@ userSubscriptionRouter.put(
 );
 
 // Delete user subscription (only if it belongs to the authenticated user)
-userSubscriptionRouter.delete("/:id", jwtMiddleware, async (c) => {
-  const id = Number(c.req.param("id"));
-  const userId = c.var.user.id;
+userSubscriptionRouter.delete(
+  "/:id",
+  describeRoute({
+    description: "Delete user subscription for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(messageSchema) },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const id = Number(c.req.param("id"));
+    const userId = c.var.user.id;
 
-  const existingUserSubscription = await userSubscriptionService.getById(id);
+    const existingUserSubscription = await userSubscriptionService.getById(id);
 
-  if (!existingUserSubscription || existingUserSubscription.userId !== userId) {
-    return c.json({ error: "User subscription not found" }, 404);
-  }
+    if (!existingUserSubscription || existingUserSubscription.userId !== userId) {
+      return c.json({ error: "User subscription not found" }, 404);
+    }
 
-  const deleted = await userSubscriptionService.delete(id);
+    const deleted = await userSubscriptionService.delete(id);
 
-  if (!deleted) {
-    return c.json({ error: "User subscription not found" }, 404);
-  }
+    if (!deleted) {
+      return c.json({ error: "User subscription not found" }, 404);
+    }
 
-  return c.json({ message: "User subscription deleted successfully" });
-});
+    return c.json({ message: "User subscription deleted successfully" });
+  },
+);

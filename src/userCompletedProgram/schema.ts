@@ -13,6 +13,11 @@ export const userCompletedProgramSchema = createSelectSchema(userCompletedProgra
 // Extended schema with joined completed exercises
 export type UserCompletedProgram = z.infer<typeof userCompletedProgramSchema>;
 
+export const userCompletedProgramOpenApiSchema = userCompletedProgramSchema.extend({
+  startDate: z.string().datetime(),
+  endDate: z.string().datetime().nullable(),
+});
+
 // Schema for completed exercise in program
 export const userCompletedExerciseSchema = createSelectSchema(userCompletedExerciseTable).extend({
   exercise: createSelectSchema(exerciseTable).optional(),
@@ -27,6 +32,10 @@ export const userCompletedProgramWithExercisesSchema = userCompletedProgramSchem
 });
 
 export type UserCompletedProgramWithExercises = z.infer<typeof userCompletedProgramWithExercisesSchema>;
+
+export const userCompletedProgramWithExercisesOpenApiSchema = userCompletedProgramOpenApiSchema.extend({
+  completedExercises: z.array(userCompletedExerciseSchema),
+});
 
 // Schema for creating user completed program
 export const createUserCompletedProgramSchema = z.object({

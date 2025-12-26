@@ -96,8 +96,7 @@ export const exerciseProgramTable = pgTable("exercise_program", {
   difficultyLevelId: integer()
     .notNull()
     .references(() => difficultyLevelTable.id),
-  subscriptionId: integer()
-    .references(() => subscriptionTable.id),
+  subscriptionId: integer().references(() => subscriptionTable.id),
 });
 
 export const exerciseProgram_FitnessGoalTable = pgTable(

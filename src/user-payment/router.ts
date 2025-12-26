@@ -1,42 +1,91 @@
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
+import { describeRoute, resolver, validator } from "hono-openapi";
+import { z } from "zod";
 import { jwtMiddleware } from "../middleware/jwt";
 import { userPaymentService } from "./service";
 import {
   createUserPaymentSchema,
   updateUserPaymentSchema,
+  userPaymentOpenApiSchema,
 } from "./schema";
 
 export const userPaymentRouter = new Hono();
 
+const messageSchema = z.object({ message: z.string() });
+
 // Get user payments for the authenticated user
-userPaymentRouter.get("/", jwtMiddleware, async (c) => {
-  const userId = c.var.user.id;
+userPaymentRouter.get(
+  "/",
+  describeRoute({
+    description: "Get user payments for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(userPaymentOpenApiSchema.array()) },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const userId = c.var.user.id;
 
-  const userPayments = await userPaymentService.getByUserId(userId);
+    const userPayments = await userPaymentService.getByUserId(userId);
 
-  return c.json(userPayments);
-});
+    return c.json(userPayments);
+  },
+);
 
 // Get user payment by ID (only if it belongs to the authenticated user)
-userPaymentRouter.get("/:id", jwtMiddleware, async (c) => {
-  const id = Number(c.req.param("id"));
-  const userId = c.var.user.id;
+userPaymentRouter.get(
+  "/:id",
+  describeRoute({
+    description: "Get user payment by ID for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(userPaymentOpenApiSchema) },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const id = Number(c.req.param("id"));
+    const userId = c.var.user.id;
 
-  const userPayment = await userPaymentService.getById(id);
+    const userPayment = await userPaymentService.getById(id);
 
-  if (!userPayment || userPayment.userId !== userId) {
-    return c.json({ error: "User payment not found" }, 404);
-  }
+    if (!userPayment || userPayment.userId !== userId) {
+      return c.json({ error: "User payment not found" }, 404);
+    }
 
-  return c.json(userPayment);
-});
+    return c.json(userPayment);
+  },
+);
 
 // Create user payment for the authenticated user
 userPaymentRouter.post(
   "/",
+  describeRoute({
+    description: "Create user payment for the authenticated user",
+    responses: {
+      201: {
+        description: "Created",
+        content: {
+          "application/json": { schema: resolver(userPaymentOpenApiSchema) },
+        },
+      },
+    },
+  }),
   jwtMiddleware,
-  zValidator("json", createUserPaymentSchema),
+  validator("json", createUserPaymentSchema, (result, c) => {
+    if (!result.success) {
+      return c.json({ error: "Invalid request body" }, 400);
+    }
+  }),
   async (c) => {
     const validatedData = c.req.valid("json");
     const userId = c.var.user.id;
@@ -61,8 +110,23 @@ userPaymentRouter.post(
 // Update user payment (only if it belongs to the authenticated user)
 userPaymentRouter.put(
   "/:id",
+  describeRoute({
+    description: "Update user payment for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(userPaymentOpenApiSchema) },
+        },
+      },
+    },
+  }),
   jwtMiddleware,
-  zValidator("json", updateUserPaymentSchema),
+  validator("json", updateUserPaymentSchema, (result, c) => {
+    if (!result.success) {
+      return c.json({ error: "Invalid request body" }, 400);
+    }
+  }),
   async (c) => {
     const id = Number(c.req.param("id"));
     const validatedData = c.req.valid("json");
@@ -91,21 +155,36 @@ userPaymentRouter.put(
 );
 
 // Delete user payment (only if it belongs to the authenticated user)
-userPaymentRouter.delete("/:id", jwtMiddleware, async (c) => {
-  const id = Number(c.req.param("id"));
-  const userId = c.var.user.id;
+userPaymentRouter.delete(
+  "/:id",
+  describeRoute({
+    description: "Delete user payment for the authenticated user",
+    responses: {
+      200: {
+        description: "Successful response",
+        content: {
+          "application/json": { schema: resolver(messageSchema) },
+        },
+      },
+    },
+  }),
+  jwtMiddleware,
+  async (c) => {
+    const id = Number(c.req.param("id"));
+    const userId = c.var.user.id;
 
-  const existingUserPayment = await userPaymentService.getById(id);
+    const existingUserPayment = await userPaymentService.getById(id);
 
-  if (!existingUserPayment || existingUserPayment.userId !== userId) {
-    return c.json({ error: "User payment not found" }, 404);
-  }
+    if (!existingUserPayment || existingUserPayment.userId !== userId) {
+      return c.json({ error: "User payment not found" }, 404);
+    }
 
-  const deleted = await userPaymentService.delete(id);
+    const deleted = await userPaymentService.delete(id);
 
-  if (!deleted) {
-    return c.json({ error: "User payment not found" }, 404);
-  }
+    if (!deleted) {
+      return c.json({ error: "User payment not found" }, 404);
+    }
 
-  return c.json({ message: "User payment deleted successfully" });
-});
+    return c.json({ message: "User payment deleted successfully" });
+  },
+);
