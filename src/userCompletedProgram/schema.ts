@@ -20,8 +20,8 @@ export const userCompletedProgramOpenApiSchema = userCompletedProgramSchema.exte
 
 // Schema for completed exercise in program
 export const userCompletedExerciseSchema = createSelectSchema(userCompletedExerciseTable).extend({
-  exercise: createSelectSchema(exerciseTable).optional(),
-  programExercise: createSelectSchema(exerciseProgram_ExerciseTable).optional(),
+  exercise: createSelectSchema(exerciseTable).optional().nullable(),
+  programExercise: createSelectSchema(exerciseProgram_ExerciseTable).optional().nullable(),
 });
 
 export type UserCompletedExercise = z.infer<typeof userCompletedExerciseSchema>;
@@ -41,7 +41,7 @@ export const userCompletedProgramWithExercisesOpenApiSchema = userCompletedProgr
 export const createUserCompletedProgramSchema = z.object({
   userId: z.number(),
   programId: z.number(),
-  startDate: z.string().datetime().optional(), // ISO string
+  startDate: z.string().datetime().optional().nullable(), // ISO string
   endDate: z.string().datetime().optional().nullable(), // ISO string or null
 });
 
@@ -49,9 +49,9 @@ export type CreateUserCompletedProgram = z.infer<typeof createUserCompletedProgr
 
 // Schema for updating user completed program
 export const updateUserCompletedProgramSchema = z.object({
-  userId: z.number().optional(),
-  programId: z.number().optional(),
-  startDate: z.string().datetime().optional(), // ISO string
+  userId: z.number().optional().nullable(),
+  programId: z.number().optional().nullable(),
+  startDate: z.string().datetime().optional().nullable(), // ISO string
   endDate: z.string().datetime().optional().nullable(), // ISO string or null
 }).partial();
 
@@ -63,10 +63,10 @@ export const createUserCompletedExerciseSchema = z.object({
   programExerciseId: z.number().optional().nullable(),
   exerciseId: z.number().optional().nullable(),
   sets: z.number().default(1),
-  reps: z.number().optional(),
-  duration: z.number().optional(),
-  weight: z.number().optional(),
-  restDuration: z.number().optional(),
+  reps: z.number().optional().nullable(),
+  duration: z.number().optional().nullable(),
+  weight: z.number().optional().nullable(),
+  restDuration: z.number().optional().nullable(),
 });
 
 export type CreateUserCompletedExercise = z.infer<typeof createUserCompletedExerciseSchema>;
@@ -75,11 +75,11 @@ export type CreateUserCompletedExercise = z.infer<typeof createUserCompletedExer
 export const updateUserCompletedExerciseSchema = z.object({
   programExerciseId: z.number().optional().nullable(),
   exerciseId: z.number().optional().nullable(),
-  sets: z.number().optional(),
-  reps: z.number().optional(),
-  duration: z.number().optional(),
-  weight: z.number().optional(),
-  restDuration: z.number().optional(),
+  sets: z.number().optional().nullable(),
+  reps: z.number().optional().nullable(),
+  duration: z.number().optional().nullable(),
+  weight: z.number().optional().nullable(),
+  restDuration: z.number().optional().nullable(),
 }).partial();
 
 export type UpdateUserCompletedExercise = z.infer<typeof updateUserCompletedExerciseSchema>;

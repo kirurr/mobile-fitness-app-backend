@@ -13,8 +13,8 @@ export type UserCompletedExercise = z.infer<typeof userCompletedExerciseSchema>;
 
 // Extended schema with joined exercise details
 export const userCompletedExerciseWithDetailsSchema = createSelectSchema(userCompletedExerciseTable).extend({
-  exercise: createSelectSchema(exerciseTable).optional(),
-  programExercise: createSelectSchema(exerciseProgram_ExerciseTable).optional(),
+  exercise: createSelectSchema(exerciseTable).optional().nullable(),
+  programExercise: createSelectSchema(exerciseProgram_ExerciseTable).optional().nullable(),
 });
 
 export type UserCompletedExerciseWithDetails = z.infer<typeof userCompletedExerciseWithDetailsSchema>;
@@ -25,10 +25,10 @@ export const createUserCompletedExerciseSchema = z.object({
   programExerciseId: z.number().optional().nullable(),
   exerciseId: z.number().optional().nullable(),
   sets: z.number().default(1),
-  reps: z.number().optional(),
-  duration: z.number().optional(),
-  weight: z.number().optional(),
-  restDuration: z.number().optional(),
+  reps: z.number().optional().nullable(),
+  duration: z.number().optional().nullable(),
+  weight: z.number().optional().nullable(),
+  restDuration: z.number().optional().nullable(),
 });
 
 export type CreateUserCompletedExercise = z.infer<typeof createUserCompletedExerciseSchema>;
@@ -37,11 +37,11 @@ export type CreateUserCompletedExercise = z.infer<typeof createUserCompletedExer
 export const updateUserCompletedExerciseSchema = z.object({
   programExerciseId: z.number().optional().nullable(),
   exerciseId: z.number().optional().nullable(),
-  sets: z.number().optional(),
-  reps: z.number().optional(),
-  duration: z.number().optional(),
-  weight: z.number().optional(),
-  restDuration: z.number().optional(),
+  sets: z.number().optional().nullable(),
+  reps: z.number().optional().nullable(),
+  duration: z.number().optional().nullable(),
+  weight: z.number().optional().nullable(),
+  restDuration: z.number().optional().nullable(),
 }).partial();
 
 export type UpdateUserCompletedExercise = z.infer<typeof updateUserCompletedExerciseSchema>;

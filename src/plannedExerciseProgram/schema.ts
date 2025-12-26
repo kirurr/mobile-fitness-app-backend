@@ -33,15 +33,15 @@ export const plannedExerciseProgramWithDatesOpenApiSchema = plannedExerciseProgr
 // Schema for creating planned exercise program
 export const createPlannedExerciseProgramSchema = z.object({
   programId: z.number(),
-  dates: z.array(z.string().datetime()).optional().default([]), // Array of ISO date strings
+  dates: z.array(z.string().datetime()).optional().nullable().default([]), // Array of ISO date strings
 });
 
 export type CreatePlannedExerciseProgram = z.infer<typeof createPlannedExerciseProgramSchema>;
 
 // Schema for updating planned exercise program
 export const updatePlannedExerciseProgramSchema = z.object({
-  programId: z.number().optional(),
-  dates: z.array(z.string().datetime()).optional(), // Array of ISO date strings for new dates
+  programId: z.number().optional().nullable(),
+  dates: z.array(z.string().datetime()).optional().nullable(), // Array of ISO date strings for new dates
 }).partial();
 
 export type UpdatePlannedExerciseProgram = z.infer<typeof updatePlannedExerciseProgramSchema>;

@@ -14,7 +14,7 @@ export const userSubscriptionOpenApiSchema = userSubscriptionSchema.extend({
 export const createUserSubscriptionSchema = createInsertSchema(userSubscriptionTable, {
   userId: z.number(),
   subscriptionId: z.number(),
-  startDate: z.string().datetime().optional(),
+  startDate: z.string().datetime().optional().nullable(),
   endDate: z.string().datetime(),
 });
 

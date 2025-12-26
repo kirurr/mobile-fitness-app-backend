@@ -45,10 +45,10 @@ export type ExerciseProgramWithExercises = z.infer<typeof exerciseProgramWithExe
 
 // Schema for query parameters for filtering
 export const exerciseProgramFilterSchema = z.object({
-  difficultyLevelId: z.string().optional(),
-  subscriptionId: z.string().optional(),
-  fitnessGoalId: z.string().optional(),
-  userId: z.string().optional(), // If provided, only return programs for this user
+  difficultyLevelId: z.string().optional().nullable(),
+  subscriptionId: z.string().optional().nullable(),
+  fitnessGoalId: z.string().optional().nullable(),
+  userId: z.string().optional().nullable(), // If provided, only return programs for this user
 }).partial();
 
 export type ExerciseProgramFilter = z.infer<typeof exerciseProgramFilterSchema>;
@@ -58,37 +58,37 @@ export const createExerciseProgramSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
   difficultyLevelId: z.number(),
-  subscriptionId: z.number().nullable().optional(), // Can be null for system programs
-  userId: z.number().nullable().optional(), // Can be null for system programs
-  fitnessGoalIds: z.array(z.number()).optional().default([]),
+  subscriptionId: z.number().nullable().optional().nullable(), // Can be null for system programs
+  userId: z.number().nullable().optional().nullable(), // Can be null for system programs
+  fitnessGoalIds: z.array(z.number()).optional().nullable().default([]),
   exerciseIds: z.array(z.object({
     exerciseId: z.number(),
-    order: z.number().optional(),
+    order: z.number().optional().nullable(),
     sets: z.number(),
-    reps: z.number().optional(),
-    duration: z.number().optional(),
+    reps: z.number().optional().nullable(),
+    duration: z.number().optional().nullable(),
     restDuration: z.number(),
-  })).optional().default([]),
+  })).optional().nullable().default([]),
 });
 
 export type CreateExerciseProgram = z.infer<typeof createExerciseProgramSchema>;
 
 // Schema for updating exercise program
 export const updateExerciseProgramSchema = z.object({
-  name: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
-  difficultyLevelId: z.number().optional(),
-  subscriptionId: z.number().optional(),
-  userId: z.number().nullable().optional(), // Can be null for system programs
-  fitnessGoalIds: z.array(z.number()).optional(),
+  name: z.string().min(1).optional().nullable(),
+  description: z.string().min(1).optional().nullable(),
+  difficultyLevelId: z.number().optional().nullable(),
+  subscriptionId: z.number().optional().nullable(),
+  userId: z.number().nullable().optional().nullable(), // Can be null for system programs
+  fitnessGoalIds: z.array(z.number()).optional().nullable(),
   exerciseIds: z.array(z.object({
     exerciseId: z.number(),
     order: z.number(),
     sets: z.number(),
-    reps: z.number().optional(),
-    duration: z.number().optional(),
+    reps: z.number().optional().nullable(),
+    duration: z.number().optional().nullable(),
     restDuration: z.number(),
-  })).optional(),
+  })).optional().nullable(),
 }).partial(); // All fields are optional for updates
 
 export type UpdateExerciseProgram = z.infer<typeof updateExerciseProgramSchema>;
