@@ -29,7 +29,11 @@ export const userPaymentService = {
   create: async (data: CreateUserPaymentInput): Promise<UserPayment> => {
     const [insertedUserPayment] = await db
       .insert(userPaymentTable)
-      .values(data)
+      .values({
+        ...(data.id !== null && data.id !== undefined ? { id: data.id } : {}),
+        userId: data.userId,
+        amount: data.amount,
+      })
       .returning();
 
     return insertedUserPayment;

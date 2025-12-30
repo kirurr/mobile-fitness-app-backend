@@ -15,12 +15,12 @@ import { exerciseProgramRouter } from "./exerciseProgram/router";
 import { userCompletedProgramRouter } from "./userCompletedProgram/router";
 import { userCompletedExerciseRouter } from "./userCompletedExercise/router";
 import { plannedExerciseProgramRouter } from "./plannedExerciseProgram/router";
-import { logger } from 'hono/logger'
+import { logger } from "hono/logger";
 import { openAPIRouteHandler } from "hono-openapi";
 
 const app = new Hono();
 
-app.use(logger())
+app.use(logger());
 
 app.route("/auth", authRouter);
 app.route("/user-data", userDataRouter);
@@ -38,20 +38,18 @@ app.route("/user-completed-exercise", userCompletedExerciseRouter);
 app.route("/planned-exercise-program", plannedExerciseProgramRouter);
 
 app.get(
-  '/openapi',
+  "/openapi",
   openAPIRouteHandler(app, {
     documentation: {
       info: {
-        title: 'Hono API',
-        version: '1.0.0',
-        description: 'Greeting API',
+        title: "Hono API",
+        version: "1.0.0",
+        description: "Greeting API",
       },
-      servers: [
-        { url: 'http://localhost:3000', description: 'Local Server' },
-      ],
+      servers: [{ url: "http://localhost:3000", description: "Local Server" }],
     },
-  })
-)
+  }),
+);
 
 serve(
   {

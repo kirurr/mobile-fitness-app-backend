@@ -13,10 +13,16 @@ export const userPaymentOpenApiSchema = userPaymentSchema.extend({
 export const createUserPaymentSchema = createInsertSchema(userPaymentTable, {
   userId: z.number(),
   amount: z.number(),
-}).omit({ id: true, createdAt: true });
+})
+  .omit({ id: true, createdAt: true })
+  .extend({
+    id: z.number().optional().nullable(),
+  });
 
 export type CreateUserPaymentInput = z.infer<typeof createUserPaymentSchema>;
 
-export const updateUserPaymentSchema = createUserPaymentSchema.partial();
+export const updateUserPaymentSchema = createUserPaymentSchema
+  .omit({ id: true })
+  .partial();
 
 export type UpdateUserPaymentInput = z.infer<typeof updateUserPaymentSchema>;

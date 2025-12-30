@@ -39,6 +39,7 @@ export const userCompletedProgramWithExercisesOpenApiSchema = userCompletedProgr
 
 // Schema for creating user completed program
 export const createUserCompletedProgramSchema = z.object({
+  id: z.number().optional().nullable(),
   userId: z.number(),
   programId: z.number(),
   startDate: z.string().datetime().optional().nullable(), // ISO string
@@ -59,6 +60,7 @@ export type UpdateUserCompletedProgram = z.infer<typeof updateUserCompletedProgr
 
 // Schema for creating user completed exercise
 export const createUserCompletedExerciseSchema = z.object({
+  id: z.number().optional().nullable(),
   completedProgramId: z.number(),
   programExerciseId: z.number().optional().nullable(),
   exerciseId: z.number().optional().nullable(),

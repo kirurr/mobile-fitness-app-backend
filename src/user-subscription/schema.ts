@@ -16,15 +16,20 @@ export const createUserSubscriptionSchema = createInsertSchema(userSubscriptionT
   subscriptionId: z.number(),
   startDate: z.string().datetime().optional().nullable(),
   endDate: z.string().datetime(),
+}).extend({
+  id: z.number().optional().nullable(),
 });
 
 export type CreateUserSubscriptionInput = z.infer<typeof createUserSubscriptionSchema>;
 
-export const updateUserSubscriptionSchema = createUserSubscriptionSchema.partial();
+export const updateUserSubscriptionSchema = createUserSubscriptionSchema
+  .omit({ id: true })
+  .partial();
 
 export type UpdateUserSubscriptionInput = z.infer<typeof updateUserSubscriptionSchema>;
 
 export const updateUserSubscriptionSchemaOmitStartDate = createUserSubscriptionSchema.omit({
+  id: true,
 	startDate: true,
 	endDate: true,
 });

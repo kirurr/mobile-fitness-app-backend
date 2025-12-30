@@ -114,6 +114,9 @@ export const userCompletedProgramService = {
       const [newProgram] = await trx
         .insert(userCompletedProgramTable)
         .values({
+          ...(programData.id !== null && programData.id !== undefined
+            ? { id: programData.id }
+            : {}),
           userId: programData.userId,
           programId: programData.programId,
           startDate: programData.startDate
@@ -260,4 +263,3 @@ export const userCompletedProgramService = {
     return true;
   },
 };
-

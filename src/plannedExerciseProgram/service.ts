@@ -144,6 +144,9 @@ export const plannedExerciseProgramService = {
       const [newProgram] = await trx
         .insert(plannedExerciseProgramTable)
         .values({
+          ...(programData.id !== null && programData.id !== undefined
+            ? { id: programData.id }
+            : {}),
           programId: programData.programId,
         })
         .returning();
@@ -349,6 +352,9 @@ export const plannedExerciseProgramService = {
     const [newDate] = await db
       .insert(plannedExerciseProgram_DateTable)
       .values({
+        ...(dateData.id !== null && dateData.id !== undefined
+          ? { id: dateData.id }
+          : {}),
         plannedExerciseProgramId: dateData.plannedExerciseProgramId,
         date: new Date(dateData.date),
       })

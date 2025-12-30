@@ -206,6 +206,7 @@ async function seedExercisePrograms() {
   const systemPrograms = [
     {
       id: 1,
+      isUserAdded: false,
       name: "Beginner Full Body Workout",
       description: "A complete full body workout for beginners",
       difficultyLevelId: 1, // Beginner
@@ -214,6 +215,7 @@ async function seedExercisePrograms() {
     },
     {
       id: 2,
+      isUserAdded: false,
       name: "Premium Strength Training",
       description: "Advanced strength training program for premium subscribers",
       difficultyLevelId: 3, // Advanced

@@ -144,6 +144,9 @@ export const userCompletedExerciseService = {
       const [newExercise] = await trx
         .insert(userCompletedExerciseTable)
         .values({
+          ...(exerciseData.id !== null && exerciseData.id !== undefined
+            ? { id: exerciseData.id }
+            : {}),
           completedProgramId: exerciseData.completedProgramId,
           programExerciseId: exerciseData.programExerciseId,
           exerciseId: exerciseData.exerciseId,
@@ -228,15 +231,15 @@ export const userCompletedExerciseService = {
         .set({
           programExerciseId:
             exerciseData.programExerciseId !== undefined
-              ? exerciseData.programExerciseId
-              : existingExercise.programExerciseId,
+              ? exerciseData.programExerciseId ?? undefined
+              : existingExercise.programExerciseId ?? undefined,
           exerciseId:
             exerciseData.exerciseId !== undefined
-              ? exerciseData.exerciseId
-              : existingExercise.exerciseId,
+              ? exerciseData.exerciseId ?? undefined
+              : existingExercise.exerciseId ?? undefined,
           sets:
             exerciseData.sets !== undefined
-              ? exerciseData.sets
+              ? exerciseData.sets ?? undefined
               : existingExercise.sets,
           reps:
             exerciseData.reps !== undefined
@@ -325,4 +328,3 @@ export const userCompletedExerciseService = {
     return true;
   },
 };
-

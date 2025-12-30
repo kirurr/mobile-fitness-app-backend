@@ -21,6 +21,7 @@ export type UserCompletedExerciseWithDetails = z.infer<typeof userCompletedExerc
 
 // Schema for creating user completed exercise
 export const createUserCompletedExerciseSchema = z.object({
+  id: z.number().optional().nullable(),
   completedProgramId: z.number(),
   programExerciseId: z.number().optional().nullable(),
   exerciseId: z.number().optional().nullable(),

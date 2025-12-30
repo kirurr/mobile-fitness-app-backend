@@ -1,14 +1,14 @@
 import { sql } from "drizzle-orm";
-import { check, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { bigint, boolean, check, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
   email: text().notNull(),
   passwordHash: text().notNull(),
 });
 
 export const userDataTable = pgTable("user_data", {
-  userId: integer()
+  userId: bigint({ mode: "number" })
     .notNull()
     .primaryKey()
     .references(() => userTable.id),
@@ -16,34 +16,34 @@ export const userDataTable = pgTable("user_data", {
   age: integer().notNull(),
   weight: integer().notNull(),
   height: integer().notNull(),
-  fitnessGoalId: integer()
+  fitnessGoalId: bigint({ mode: "number" })
     .notNull()
     .references(() => fitnessGoalTable.id),
-  trainingLevel: integer()
+  trainingLevel: bigint({ mode: "number" })
     .notNull()
     .references(() => difficultyLevelTable.id),
 });
 
 export const fitnessGoalTable = pgTable("fitness_goal", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
 });
 
 export const difficultyLevelTable = pgTable("difficulty_level", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
   description: text().notNull(),
 });
 
 export const subscriptionTable = pgTable("subscription", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
   monthlyCost: integer().notNull(),
 });
 
 export const userPaymentTable = pgTable("user_payment", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  userId: integer()
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+  userId: bigint({ mode: "number" })
     .notNull()
     .references(() => userTable.id),
   createdAt: timestamp().notNull().defaultNow(),
@@ -51,62 +51,63 @@ export const userPaymentTable = pgTable("user_payment", {
 });
 
 export const userSubscriptionTable = pgTable("user_subscription", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  userId: integer()
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+  userId: bigint({ mode: "number" })
     .notNull()
     .references(() => userTable.id),
-  subscriptionId: integer().references(() => subscriptionTable.id),
+  subscriptionId: bigint({ mode: "number" }).references(() => subscriptionTable.id),
   startDate: timestamp().notNull().defaultNow(),
   endDate: timestamp().notNull(),
 });
 
 export const exerciseCategoryTable = pgTable("exercise_category", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
   description: text().notNull(),
 });
 
 export const muscleGroupTable = pgTable("muscle_group", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
 });
 
 export const exerciseTypeEnum = ["reps", "timed"] as const;
 
 export const exerciseTable = pgTable("exercise", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
   name: text().notNull(),
-  categoryId: integer()
+  categoryId: bigint({ mode: "number" })
     .notNull()
     .references(() => exerciseCategoryTable.id),
-  muscleGroupId: integer()
+  muscleGroupId: bigint({ mode: "number" })
     .notNull()
     .references(() => muscleGroupTable.id),
-  difficultyLevelId: integer()
+  difficultyLevelId: bigint({ mode: "number" })
     .notNull()
     .references(() => difficultyLevelTable.id),
   type: text({ enum: exerciseTypeEnum }).notNull(),
 });
 
 export const exerciseProgramTable = pgTable("exercise_program", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  userId: integer(),
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+  userId: bigint({ mode: "number" }),
+  isUserAdded: boolean().notNull().default(false),
   name: text().notNull(),
   description: text().notNull(),
-  difficultyLevelId: integer()
+  difficultyLevelId: bigint({ mode: "number" })
     .notNull()
     .references(() => difficultyLevelTable.id),
-  subscriptionId: integer().references(() => subscriptionTable.id),
+  subscriptionId: bigint({ mode: "number" }).references(() => subscriptionTable.id),
 });
 
 export const exerciseProgram_FitnessGoalTable = pgTable(
   "exercise_program_fitness_goal",
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity(),
-    programId: integer()
+    id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+    programId: bigint({ mode: "number" })
       .notNull()
       .references(() => exerciseProgramTable.id),
-    fitnessGoalId: integer()
+    fitnessGoalId: bigint({ mode: "number" })
       .notNull()
       .references(() => fitnessGoalTable.id),
   },
@@ -115,11 +116,11 @@ export const exerciseProgram_FitnessGoalTable = pgTable(
 export const exerciseProgram_ExerciseTable = pgTable(
   "exercise_program_exercise",
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity(),
-    programId: integer()
+    id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+    programId: bigint({ mode: "number" })
       .notNull()
       .references(() => exerciseProgramTable.id),
-    exerciseId: integer()
+    exerciseId: bigint({ mode: "number" })
       .notNull()
       .references(() => exerciseTable.id),
     order: integer().notNull().default(1),
@@ -137,11 +138,11 @@ export const exerciseProgram_ExerciseTable = pgTable(
 );
 
 export const userCompletedProgramTable = pgTable("user_completed_program", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  userId: integer()
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+  userId: bigint({ mode: "number" })
     .notNull()
     .references(() => userTable.id),
-  programId: integer()
+  programId: bigint({ mode: "number" })
     .notNull()
     .references(() => exerciseProgramTable.id),
   startDate: timestamp().notNull().defaultNow(),
@@ -151,14 +152,14 @@ export const userCompletedProgramTable = pgTable("user_completed_program", {
 export const userCompletedExerciseTable = pgTable(
   "user_completed_exercise",
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity(),
-    completedProgramId: integer()
+    id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+    completedProgramId: bigint({ mode: "number" })
       .notNull()
       .references(() => userCompletedProgramTable.id),
-    programExerciseId: integer().references(
+    programExerciseId: bigint({ mode: "number" }).references(
       () => exerciseProgram_ExerciseTable.id,
     ),
-    exerciseId: integer().references(() => exerciseTable.id),
+    exerciseId: bigint({ mode: "number" }).references(() => exerciseTable.id),
     sets: integer().notNull().default(1),
     reps: integer(),
     duration: integer(),
@@ -178,16 +179,16 @@ export const userCompletedExerciseTable = pgTable(
 );
 
 export const plannedExerciseProgramTable = pgTable("planned_exercise_program", {
-  id: integer().primaryKey().generatedByDefaultAsIdentity(),
-  programId: integer()
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+  programId: bigint({ mode: "number" })
     .notNull()
     .references(() => exerciseProgramTable.id),
 });
 export const plannedExerciseProgram_DateTable = pgTable(
   "planned_exercise_program_date",
   {
-    id: integer().primaryKey().generatedByDefaultAsIdentity(),
-    plannedExerciseProgramId: integer()
+    id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity(),
+    plannedExerciseProgramId: bigint({ mode: "number" })
       .notNull()
       .references(() => plannedExerciseProgramTable.id),
     date: timestamp().notNull(),

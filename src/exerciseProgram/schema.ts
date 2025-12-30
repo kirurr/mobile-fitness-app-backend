@@ -55,6 +55,8 @@ export type ExerciseProgramFilter = z.infer<typeof exerciseProgramFilterSchema>;
 
 // Schema for creating exercise program
 export const createExerciseProgramSchema = z.object({
+  id: z.number().optional().nullable(),
+  isUserAdded: z.boolean().optional(),
   name: z.string().min(1),
   description: z.string().min(1),
   difficultyLevelId: z.number(),
@@ -62,6 +64,7 @@ export const createExerciseProgramSchema = z.object({
   userId: z.number().nullable().optional().nullable(), // Can be null for system programs
   fitnessGoalIds: z.array(z.number()).optional().nullable().default([]),
   exerciseIds: z.array(z.object({
+		id: z.number().optional().nullable(),
     exerciseId: z.number(),
     order: z.number().optional().nullable(),
     sets: z.number(),
@@ -75,6 +78,7 @@ export type CreateExerciseProgram = z.infer<typeof createExerciseProgramSchema>;
 
 // Schema for updating exercise program
 export const updateExerciseProgramSchema = z.object({
+  isUserAdded: z.boolean().optional(),
   name: z.string().min(1).optional().nullable(),
   description: z.string().min(1).optional().nullable(),
   difficultyLevelId: z.number().optional().nullable(),
@@ -82,6 +86,7 @@ export const updateExerciseProgramSchema = z.object({
   userId: z.number().nullable().optional().nullable(), // Can be null for system programs
   fitnessGoalIds: z.array(z.number()).optional().nullable(),
   exerciseIds: z.array(z.object({
+    id: z.number().optional().nullable(),
     exerciseId: z.number(),
     order: z.number(),
     sets: z.number(),

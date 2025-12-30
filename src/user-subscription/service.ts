@@ -82,6 +82,7 @@ export const userSubscriptionService = {
     const [insertedUserSubscription] = await db
       .insert(userSubscriptionTable)
       .values({
+        ...(data.id !== null && data.id !== undefined ? { id: data.id } : {}),
         userId: data.userId,
         subscriptionId: data.subscriptionId,
         startDate: startDate,
@@ -151,4 +152,3 @@ export const userSubscriptionService = {
     return deletedUserSubscription.length > 0;
   },
 };
-
