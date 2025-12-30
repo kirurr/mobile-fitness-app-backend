@@ -1,34 +1,30 @@
-# Use a multi-stage build
-FROM node:20-alpine AS deps
+# Use a multi-stage build with bun for installs and node for runtime
+FROM oven/bun:1.1.34-alpine AS deps
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
+RUN apk add --no-cache python3 make g++
+COPY package.json ./
+RUN bun install --production --no-save
 
 # Build stage
-FROM node:20-alpine AS build
+FROM oven/bun:1.1.34-alpine AS build
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+RUN apk add --no-cache python3 make g++
+COPY package.json ./
+RUN bun install --no-save
 COPY . .
-RUN npm install -g pnpm
-RUN pnpm build
+RUN bun run build
 
-# Production stage
+# Production stage (node runtime)
 FROM node:20-alpine AS runtime
 WORKDIR /app
 
-# Install pnpm globally
-RUN npm install -g pnpm
-
-# Copy package files and install dependencies
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
-
-# Copy built application
+# Copy production dependencies and built application
+COPY --from=deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
+COPY package.json ./
 
 # Expose port
 EXPOSE 3000
 
 # Start the application
-CMD ["node", "dist/src/index.js"]
+CMD ["node", "dist/index.js"]
