@@ -1,5 +1,5 @@
 import { createSelectSchema } from "drizzle-zod";
-import { exerciseCategoryTable } from "../db/schema";
+import { exerciseCategoryTable } from "../db/schema.js";
 import { z } from "zod";
 
 export const exerciseCategorySchema = createSelectSchema(exerciseCategoryTable);

@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { describeRoute, resolver } from "hono-openapi";
-import { exerciseCategoryService } from "./service";
-import { jwtMiddleware } from "../middleware/jwt";
-import { exerciseCategorySchema } from "./schema";
+import { exerciseCategoryService } from "./service.js";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { exerciseCategorySchema } from "./schema.js";
 
 export const exerciseCategoryRouter = new Hono();
 

@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { userTable } from "../db/schema";
+import { userTable } from "../db/schema.js";
 import { z } from "zod";
 import type { JWTPayload } from "hono/utils/jwt/types";
 

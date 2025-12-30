@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import { z } from "zod";
-import { authService } from "./service";
-import { authUserSchema } from "../user/schema";
+import { authService } from "./service.js";
+import { authUserSchema } from "../user/schema.js";
 
 export const authRouter = new Hono();
 

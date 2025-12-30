@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/drizzle";
-import { subscriptionTable } from "../db/schema";
-import type { Subscription } from "./schema";
+import { db } from "../db/drizzle.js";
+import { subscriptionTable } from "../db/schema.js";
+import type { Subscription } from "./schema.js";
 
 export const subscriptionService = {
   getAll: async (): Promise<Subscription[]> => {

@@ -1,15 +1,15 @@
-import { db } from "../db/drizzle";
+import { db } from "../db/drizzle.js";
 import {
   userCompletedProgramTable,
   userCompletedExerciseTable,
   exerciseTable,
   exerciseProgram_ExerciseTable,
-} from "../db/schema";
+} from "../db/schema.js";
 import { eq, and, desc } from "drizzle-orm";
 import type {
   CreateUserCompletedProgram,
   UpdateUserCompletedProgram,
-} from "./schema";
+} from "./schema.js";
 
 export const userCompletedProgramService = {
   // Get all user completed programs with optional filtering

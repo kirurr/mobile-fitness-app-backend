@@ -1,7 +1,7 @@
-import { db } from "../db/drizzle";
-import { exerciseCategoryTable } from "../db/schema";
+import { db } from "../db/drizzle.js";
+import { exerciseCategoryTable } from "../db/schema.js";
 import { eq } from "drizzle-orm";
-import type { ExerciseCategory } from "./schema";
+import type { ExerciseCategory } from "./schema.js";
 
 export const exerciseCategoryService = {
   getAll: async (): Promise<ExerciseCategory[]> => {

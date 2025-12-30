@@ -1,12 +1,12 @@
 import { eq, and } from "drizzle-orm";
-import { db } from "../db/drizzle";
-import { userSubscriptionTable } from "../db/schema";
+import { db } from "../db/drizzle.js";
+import { userSubscriptionTable } from "../db/schema.js";
 import type {
   UserSubscription,
   CreateUserSubscriptionInput,
   UpdateUserSubscriptionInput,
   UpdateUserSubscription,
-} from "./schema";
+} from "./schema.js";
 
 export const userSubscriptionService = {
   getByUserId: async (userId: number): Promise<UserSubscription[]> => {

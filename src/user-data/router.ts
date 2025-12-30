@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import { z } from "zod";
-import { jwtMiddleware } from "../middleware/jwt";
-import { userDataService } from "./service";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { userDataService } from "./service.js";
 import {
   createUserDataSchema,
   updateUserDataSchema,
   userDataSchema,
-} from "./schema";
+} from "./schema.js";
 
 export const userDataRouter = new Hono();
 

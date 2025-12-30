@@ -1,7 +1,7 @@
-import { db } from "../db/drizzle";
-import { muscleGroupTable } from "../db/schema";
+import { db } from "../db/drizzle.js";
+import { muscleGroupTable } from "../db/schema.js";
 import { eq } from "drizzle-orm";
-import type { MuscleGroup } from "./schema";
+import type { MuscleGroup } from "./schema.js";
 
 export const muscleGroupService = {
   getAll: async (): Promise<MuscleGroup[]> => {

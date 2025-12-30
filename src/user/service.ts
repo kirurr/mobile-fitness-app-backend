@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/drizzle";
-import { userTable } from "../db/schema";
-import { hashPassword, verifyPassword } from "../lib/utils";
-import type { User, AuthUserInput } from "./schema";
+import { db } from "../db/drizzle.js";
+import { userTable } from "../db/schema.js";
+import { hashPassword, verifyPassword } from "../lib/utils.js";
+import type { User, AuthUserInput } from "./schema.js";
 
 export const userService = {
   getByEmail: async (email: string): Promise<User | null> => {

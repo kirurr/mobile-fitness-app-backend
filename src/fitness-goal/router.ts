@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { describeRoute, resolver } from "hono-openapi";
-import { jwtMiddleware } from "../middleware/jwt";
-import { fitnessGoalService } from "./service";
-import { fitnessGoalSchema } from "./schema";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { fitnessGoalService } from "./service.js";
+import { fitnessGoalSchema } from "./schema.js";
 
 export const fitnessGoalRouter = new Hono();
 

@@ -1,7 +1,7 @@
 import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
-import { verifyToken } from "../lib/jwt";
-import type { UserJWTPayload } from "../user/schema";
+import { verifyToken } from "../lib/jwt.js";
+import type { UserJWTPayload } from "../user/schema.js";
 
 export const jwtMiddleware = createMiddleware<{
   Variables: {

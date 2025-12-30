@@ -1,5 +1,5 @@
 import { createSelectSchema } from "drizzle-zod";
-import { muscleGroupTable } from "../db/schema";
+import { muscleGroupTable } from "../db/schema.js";
 import { z } from "zod";
 
 export const muscleGroupSchema = createSelectSchema(muscleGroupTable);

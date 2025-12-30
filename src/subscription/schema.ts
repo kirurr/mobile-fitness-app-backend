@@ -1,5 +1,5 @@
 import { createSelectSchema } from "drizzle-zod";
-import { subscriptionTable } from "../db/schema";
+import { subscriptionTable } from "../db/schema.js";
 import { z } from "zod";
 
 export const subscriptionSchema = createSelectSchema(subscriptionTable);

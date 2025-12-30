@@ -5,14 +5,14 @@ import {
   exerciseTable,
   fitnessGoalTable,
   userCompletedExerciseTable,
-} from "../db/schema";
+} from "../db/schema.js";
 import { eq, and, or, isNull, inArray, SQL } from "drizzle-orm";
 import type {
   ExerciseProgramFilter,
   CreateExerciseProgram,
   UpdateExerciseProgram,
-} from "./schema";
-import { db } from "../db/drizzle";
+} from "./schema.js";
+import { db } from "../db/drizzle.js";
 
 export const exerciseProgramService = {
   // Get all exercise programs with optional filtering and including exercises and fitness goals

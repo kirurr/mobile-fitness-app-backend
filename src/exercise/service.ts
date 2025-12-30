@@ -1,7 +1,7 @@
-import { exerciseTable } from "../db/schema";
+import { exerciseTable } from "../db/schema.js";
 import { eq, and, SQL, inArray } from "drizzle-orm";
-import type { ExerciseFilter } from "./schema";
-import { db } from "../db/drizzle";
+import type { ExerciseFilter } from "./schema.js";
+import { db } from "../db/drizzle.js";
 
 export const exerciseService = {
   // Get all exercises with optional filtering

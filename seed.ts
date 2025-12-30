@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { db } from "./src/db/drizzle";
+import { db } from "./src/db/drizzle.ts";
 import type { InferSelectModel } from "drizzle-orm";
 import {
   difficultyLevelTable,
@@ -11,7 +11,7 @@ import {
   exerciseProgramTable,
   exerciseProgram_FitnessGoalTable,
   exerciseProgram_ExerciseTable,
-} from "./src/db/schema";
+} from "./src/db/schema.ts";
 
 async function seedDifficultyLevels() {
   const difficultyLevels: Array<InferSelectModel<typeof difficultyLevelTable>> =

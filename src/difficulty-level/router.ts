@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { describeRoute, resolver } from "hono-openapi";
-import { jwtMiddleware } from "../middleware/jwt";
-import { difficultyLevelService } from "./service";
-import { difficultyLevelSchema } from "./schema";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { difficultyLevelService } from "./service.js";
+import { difficultyLevelSchema } from "./schema.js";
 
 export const difficultyLevelRouter = new Hono();
 

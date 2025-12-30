@@ -1,16 +1,16 @@
-import { db } from "../db/drizzle";
+import { db } from "../db/drizzle.js";
 import {
   plannedExerciseProgramTable,
   plannedExerciseProgram_DateTable,
   exerciseProgramTable
-} from "../db/schema";
+} from "../db/schema.js";
 import { eq, and, inArray, or, isNull } from "drizzle-orm";
 import type {
   CreatePlannedExerciseProgram,
   UpdatePlannedExerciseProgram,
   CreatePlannedExerciseProgramDate,
   UpdatePlannedExerciseProgramDate
-} from "./schema";
+} from "./schema.js";
 
 export const plannedExerciseProgramService = {
   // Get all planned exercise programs with their dates

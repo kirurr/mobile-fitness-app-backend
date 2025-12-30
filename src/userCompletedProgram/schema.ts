@@ -4,7 +4,7 @@ import {
   userCompletedExerciseTable,
   exerciseTable,
   exerciseProgram_ExerciseTable
-} from "../db/schema";
+} from "../db/schema.js";
 import { createSelectSchema } from "drizzle-zod";
 
 // Base schema for user completed program

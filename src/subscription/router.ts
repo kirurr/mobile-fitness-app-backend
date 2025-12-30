@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { describeRoute, resolver } from "hono-openapi";
-import { jwtMiddleware } from "../middleware/jwt";
-import { subscriptionService } from "./service";
-import { subscriptionSchema } from "./schema";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { subscriptionService } from "./service.js";
+import { subscriptionSchema } from "./schema.js";
 
 export const subscriptionRouter = new Hono();
 

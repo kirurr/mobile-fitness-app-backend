@@ -1,5 +1,5 @@
 import { createSelectSchema } from "drizzle-zod";
-import { difficultyLevelTable } from "../db/schema";
+import { difficultyLevelTable } from "../db/schema.js";
 import { z } from "zod";
 
 export const difficultyLevelSchema = createSelectSchema(difficultyLevelTable);

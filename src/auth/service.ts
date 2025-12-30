@@ -1,7 +1,7 @@
 import { HTTPException } from "hono/http-exception";
-import { signToken } from "../lib/jwt";
-import type { AuthUserInput } from "../user/schema";
-import { userService } from "../user/service";
+import { signToken } from "../lib/jwt.js";
+import type { AuthUserInput } from "../user/schema.js";
+import { userService } from "../user/service.js";
 
 type AuthResponse = {
   userId: number;

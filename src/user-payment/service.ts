@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/drizzle";
-import { userPaymentTable } from "../db/schema";
-import type { UserPayment, CreateUserPaymentInput, UpdateUserPaymentInput } from "./schema";
+import { db } from "../db/drizzle.js";
+import { userPaymentTable } from "../db/schema.js";
+import type { UserPayment, CreateUserPaymentInput, UpdateUserPaymentInput } from "./schema.js";
 
 export const userPaymentService = {
   getByUserId: async (userId: number): Promise<UserPayment[]> => {

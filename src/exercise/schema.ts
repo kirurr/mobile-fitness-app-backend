@@ -1,4 +1,4 @@
-import { exerciseTable } from "../db/schema";
+import { exerciseTable } from "../db/schema.js";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 

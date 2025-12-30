@@ -1,15 +1,15 @@
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import { z } from "zod";
-import { jwtMiddleware } from "../middleware/jwt";
-import { exerciseProgramService } from "./service";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { exerciseProgramService } from "./service.js";
 import {
   exerciseProgramFilterSchema,
   createExerciseProgramSchema,
   updateExerciseProgramSchema,
   exerciseProgramSchema,
   exerciseProgramWithExercisesSchema,
-} from "./schema";
+} from "./schema.js";
 
 export const exerciseProgramRouter = new Hono();
 

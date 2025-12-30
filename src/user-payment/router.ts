@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { describeRoute, resolver, validator } from "hono-openapi";
 import { z } from "zod";
-import { jwtMiddleware } from "../middleware/jwt";
-import { userPaymentService } from "./service";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { userPaymentService } from "./service.js";
 import {
   createUserPaymentSchema,
   updateUserPaymentSchema,
   userPaymentOpenApiSchema,
-} from "./schema";
+} from "./schema.js";
 
 export const userPaymentRouter = new Hono();
 

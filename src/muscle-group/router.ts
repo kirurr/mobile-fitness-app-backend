@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { describeRoute, resolver } from "hono-openapi";
-import { muscleGroupService } from "./service";
-import { jwtMiddleware } from "../middleware/jwt";
-import { muscleGroupSchema } from "./schema";
+import { muscleGroupService } from "./service.js";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { muscleGroupSchema } from "./schema.js";
 
 export const muscleGroupRouter = new Hono();
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { 
   plannedExerciseProgramTable,
   plannedExerciseProgram_DateTable
-} from "../db/schema";
+} from "../db/schema.js";
 import { createSelectSchema } from "drizzle-zod";
 
 // Base schema for planned exercise program

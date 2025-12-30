@@ -6,7 +6,7 @@ import {
   fitnessGoalTable,
   difficultyLevelTable,
   subscriptionTable
-} from "../db/schema";
+} from "../db/schema.js";
 import { createSelectSchema } from "drizzle-zod";
 
 const exerciseProgramExerciseSchema = createSelectSchema(exerciseProgram_ExerciseTable);

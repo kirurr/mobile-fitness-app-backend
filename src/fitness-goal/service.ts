@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/drizzle";
-import { fitnessGoalTable } from "../db/schema";
-import type { FitnessGoal } from "./schema";
+import { db } from "../db/drizzle.js";
+import { fitnessGoalTable } from "../db/schema.js";
+import type { FitnessGoal } from "./schema.js";
 
 export const fitnessGoalService = {
   getAll: async (): Promise<FitnessGoal[]> => {

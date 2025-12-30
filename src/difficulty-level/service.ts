@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/drizzle";
-import { difficultyLevelTable } from "../db/schema";
-import type { DifficultyLevel } from "./schema";
+import { db } from "../db/drizzle.js";
+import { difficultyLevelTable } from "../db/schema.js";
+import type { DifficultyLevel } from "./schema.js";
 
 export const difficultyLevelService = {
   getAll: async (): Promise<DifficultyLevel[]> => {

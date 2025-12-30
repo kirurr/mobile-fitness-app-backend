@@ -2,10 +2,10 @@
   "name": "mobile-fitness-app-backend",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "bun --watch src/index.ts",
     "build": "tsc",
-    "start": "node --experimental-specifier-resolution=node dist/src/index.js",
-    "db:seed": "tsx seed.ts",
+    "start": "node dist/src/index.js",
+    "db:seed": "bun run seed.ts",
     "lint": "eslint",
     "db:push": "drizzle-kit push"
   },

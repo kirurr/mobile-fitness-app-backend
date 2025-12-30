@@ -1,4 +1,4 @@
-import type { UserJWTPayload } from "../user/schema";
+import type { UserJWTPayload } from "../user/schema.js";
 import { SignJWT, jwtVerify } from "jose";
 
 const secretENV = process.env.JWT_SECRET;

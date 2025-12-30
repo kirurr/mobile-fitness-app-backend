@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/drizzle";
-import { userDataTable } from "../db/schema";
-import type { UserData, CreateUserDataInput, UpdateUserDataInput } from "./schema";
+import { db } from "../db/drizzle.js";
+import { userDataTable } from "../db/schema.js";
+import type { UserData, CreateUserDataInput, UpdateUserDataInput } from "./schema.js";
 
 export const userDataService = {
   getByUserId: async (userId: number): Promise<UserData | null> => {

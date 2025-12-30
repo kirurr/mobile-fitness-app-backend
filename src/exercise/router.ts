@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { jwtMiddleware } from "../middleware/jwt";
-import { exerciseService } from "./service";
+import { jwtMiddleware } from "../middleware/jwt.js";
+import { exerciseService } from "./service.js";
 import { describeRoute, resolver, validator } from "hono-openapi";
-import { exerciseFilterSchema, exerciseSchema } from "./schema";
+import { exerciseFilterSchema, exerciseSchema } from "./schema.js";
 import z from "zod";
 
 const router = new Hono();
