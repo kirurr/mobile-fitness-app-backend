@@ -2,15 +2,15 @@
 FROM oven/bun:1.1.34-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache python3 make g++
-COPY package.json ./
-RUN bun install --production --no-save
+COPY package.json bun.lock ./
+RUN bun install --production --no-save --frozen-lockfile
 
 # Build stage
 FROM oven/bun:1.1.34-alpine AS build
 WORKDIR /app
 RUN apk add --no-cache python3 make g++
-COPY package.json ./
-RUN bun install --no-save
+COPY package.json bun.lock ./
+RUN bun install --no-save --frozen-lockfile
 COPY . .
 RUN bun run build
 

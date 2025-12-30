@@ -16,7 +16,7 @@ services:
       - DB_NAME=fitness_app
       - DB_USER=fitness_user
       - DB_PASSWORD=password123
-    command: pnpm dev
+    command: bun run dev
     depends_on:
       - db
     restart: unless-stopped
