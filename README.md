@@ -30,6 +30,14 @@ After the containers are up, you must run migrations:
 docker compose exec app bun run db:push
 ```
 
+## Seed data
+
+After migrations, you must run the seed command to provide initial data to database:
+
+```bash
+docker compose exec app bun run db:seed
+```
+
 ## Important
 
 - Run the project only via Docker so the database is started as well.
